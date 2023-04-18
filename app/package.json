@@ -36,5 +36,9 @@
       "eslint",
       "prettier --write --ignore-unknown"
     ]
+  },
+  "dependencies": {
+    "@discordjs/voice": "^0.16.0",
+    "discord.js": "^14.9.0"
   }
 }

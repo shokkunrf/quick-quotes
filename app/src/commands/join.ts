@@ -6,6 +6,7 @@ import {
 } from 'discord.js';
 import { joinVoiceChannel } from '@discordjs/voice';
 import { Command } from '@/commands/command';
+import { listen } from '@/voice/listen';
 
 const COMMAND_NAME = 'join';
 const OPTION_NAME = 'channel';
@@ -41,12 +42,14 @@ export const join: Command = {
       });
       return;
     }
-    joinVoiceChannel({
+    const connection = joinVoiceChannel({
       guildId: guild.id,
       channelId: channel.id,
       adapterCreator: guild.voiceAdapterCreator,
       selfDeaf: false,
     });
+
+    listen(connection);
 
     await interaction.reply('Joined:handshake:');
     await interaction.deleteReply();

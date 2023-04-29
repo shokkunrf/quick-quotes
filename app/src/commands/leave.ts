@@ -5,6 +5,7 @@ import {
 } from 'discord.js';
 import { getVoiceConnection } from '@discordjs/voice';
 import { Command } from '@/commands/command';
+import { clear } from '@/voice/listen';
 
 const COMMAND_NAME = 'leave';
 
@@ -32,8 +33,11 @@ export const leave: Command = {
       });
       return;
     }
+
+    await interaction.reply('Please wait...');
+    clear(connection);
     connection.destroy();
-    await interaction.reply('Bye:wave:');
+    await interaction.editReply('Bye:wave:');
     await interaction.deleteReply();
   },
 };

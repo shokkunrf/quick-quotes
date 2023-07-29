@@ -5,7 +5,7 @@ import {
 } from 'discord.js';
 import { getVoiceConnection } from '@discordjs/voice';
 import { Command } from '@/commands/command';
-import { clear } from '@/voice/listen';
+import { clear } from '@/services/listen';
 
 const COMMAND_NAME = 'leave';
 

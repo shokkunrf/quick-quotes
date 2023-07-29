@@ -6,7 +6,7 @@ import {
 } from 'discord.js';
 import { joinVoiceChannel } from '@discordjs/voice';
 import { Command } from '@/commands/command';
-import { listen } from '@/voice/listen';
+import { listen } from '@/services/listen';
 
 const COMMAND_NAME = 'join';
 const OPTION_NAME = 'channel';

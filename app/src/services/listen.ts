@@ -3,6 +3,7 @@ import { createWriteStream } from 'fs';
 import { pipeline } from 'stream';
 import * as prism from 'prism-media';
 import { RECORDING_DIR } from '@/config';
+import { publishRecordedMessage } from './publish';
 
 type GuildId = string;
 type UserId = string;
@@ -24,8 +25,8 @@ function deleteSpeakers(guildId: GuildId): boolean {
   return guildSpeakers.delete(guildId);
 }
 
-function getFilePath(guildId: GuildId, userId: UserId): string {
-  return `${RECORDING_DIR}/${guildId}_${Date.now()}_${userId}.ogg`;
+function getFilePath(guildId: GuildId, userId: UserId, time: Date): string {
+  return `${RECORDING_DIR}/${guildId}_${time.getTime()}_${userId}.ogg`;
 }
 
 // Recorder
@@ -55,13 +56,20 @@ export function listen(connection: VoiceConnection) {
         maxPackets: 10,
       },
     });
-    const filePath = getFilePath(guildId, userId);
+    const time = new Date();
+    const filePath = getFilePath(guildId, userId, time);
     const dist = createWriteStream(filePath);
 
     pipeline(userStream, oggStream, dist, (err) => {
       if (err) {
         console.warn(`Error '${filePath}': ${err.message}`);
       }
+      publishRecordedMessage({
+        guildID: guildId,
+        userID: userId,
+        time,
+        filePath,
+      });
       speakers.delete(userId);
     });
   });

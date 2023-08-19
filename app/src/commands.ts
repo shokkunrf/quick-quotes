@@ -3,11 +3,15 @@ import { ping } from '@/commands/ping';
 import { join } from '@/commands/join';
 import { leave } from '@/commands/leave';
 import { Command } from '@/commands/command';
+import { DEV_DISCORD_GUILD_ID, DEV_ENVIRONMENT } from '@/config';
 
 const commands: Command[] = [ping, join, leave];
 
 export async function register(client: Client<true>) {
   const commandData = commands.map((command) => command.data);
+  if (DEV_ENVIRONMENT === 'local') {
+    await client.application.commands.set(commandData, DEV_DISCORD_GUILD_ID);
+  }
   await client.application.commands.set(commandData);
 }
 

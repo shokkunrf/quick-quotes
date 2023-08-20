@@ -1,0 +1,19 @@
+{
+  "name": "Existing Docker Compose (Extend)",
+  "dockerComposeFile": ["../../docker-compose.yml", "docker-compose.yml"],
+  "service": "transcriber",
+  "workspaceFolder": "/workspace",
+  "postCreateCommand": "sh ./transcriber/.devcontainer/setup.sh",
+  "remoteUser": "snake",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "editor.formatOnSave": true,
+        "[python]":{
+          "editor.defaultFormatter": "ms-python.black-formatter"
+        }
+      },
+      "extensions": ["ms-python.python", "ms-python.black-formatter"]
+    }
+  }
+}

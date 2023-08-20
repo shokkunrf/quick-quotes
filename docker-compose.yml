@@ -15,6 +15,13 @@ services:
       BROKER_PORT: "5672"
       DEV_ENVIRONMENT: "local"
       DEV_DISCORD_GUILD_ID: $DEV_DISCORD_GUILD_ID
+  transcriber:
+    build:
+      context: "./transcriber"
+    volumes:
+      - "./transcriber/app:/app"
+    working_dir: "/app"
+    command: "python /app/src/main.py"
   broker:
     image: "rabbitmq:3.12.2-management-alpine"
     volumes:

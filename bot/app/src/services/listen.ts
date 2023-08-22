@@ -25,8 +25,8 @@ function deleteSpeakers(guildId: GuildId): boolean {
   return guildSpeakers.delete(guildId);
 }
 
-function getFilePath(guildId: GuildId, userId: UserId, time: Date): string {
-  return `${RECORDING_DIR}/${guildId}_${time.getTime()}_${userId}.ogg`;
+function getFileName(guildId: GuildId, userId: UserId, time: Date): string {
+  return `${guildId}_${time.getTime()}_${userId}.ogg`;
 }
 
 // Recorder
@@ -57,18 +57,18 @@ export function listen(connection: VoiceConnection) {
       },
     });
     const time = new Date();
-    const filePath = getFilePath(guildId, userId, time);
-    const dist = createWriteStream(filePath);
+    const fileName = getFileName(guildId, userId, time);
+    const dist = createWriteStream(`${RECORDING_DIR}/${fileName}`);
 
     pipeline(userStream, oggStream, dist, (err) => {
       if (err) {
-        console.warn(`Error '${filePath}': ${err.message}`);
+        console.warn(`Error '${fileName}': ${err.message}`);
       }
       publishRecordedMessage({
         guildID: guildId,
         userID: userId,
         time,
-        filePath,
+        fileName,
       });
       speakers.delete(userId);
     });

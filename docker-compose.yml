@@ -5,6 +5,7 @@ services:
       context: "./bot"
     volumes:
       - "./bot/app:/app"
+      - "./storage:/storage"
     working_dir: "/app"
     command: "npm run dev"
     environment:
@@ -20,6 +21,7 @@ services:
       context: "./transcriber"
     volumes:
       - "./transcriber/app:/app"
+      - "./storage:/storage"
     working_dir: "/app"
     command: "python /app/src/main.py"
     environment:

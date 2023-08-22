@@ -13,7 +13,7 @@ export type RecordedMessage = {
   guildID: string;
   userID: string;
   time: Date;
-  filePath: string;
+  fileName: string;
 };
 
 export async function publishRecordedMessage(message: RecordedMessage) {

@@ -2,6 +2,7 @@ FROM python:3.11.4-slim-bookworm
 
 RUN apt update && \
     apt install -y \
+        ffmpeg \
         sudo
 
 RUN groupadd --gid 1000 snake && \

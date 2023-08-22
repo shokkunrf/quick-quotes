@@ -1,12 +1,25 @@
 #!/usr/bin/env python
+import json
 import sys, os
-from config import BROKER_HOST, BROKER_PORT, BROKER_USERNAME, BROKER_PASSWORD
+from config import (
+    BROKER_HOST,
+    BROKER_PORT,
+    BROKER_USERNAME,
+    BROKER_PASSWORD,
+    STORAGE_DIR,
+)
 from receiver import Receiver
+from transcriber import Transcriber
 
 
 def main():
+    transcriber = Transcriber()
+
     def on_message(body: bytes):
-        print(f" [x] Received {body}")
+        b = json.loads(body)
+        file_name = b["fileName"]
+        text = transcriber.transcribe(f"{STORAGE_DIR}/{file_name}")
+        print("=== received ===: " + text)
 
     receiver = Receiver(
         host=BROKER_HOST,

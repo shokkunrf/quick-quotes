@@ -42,3 +42,21 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: $BROKER_USERNAME
       RABBITMQ_DEFAULT_PASS: $BROKER_PASSWORD
+  db:
+    image: "mongo:4.4.23"
+    volumes:
+      - "mongo:/data/db"
+      - "./db/config/mongo.conf:/etc/mongo.conf"
+      - "./db/init:/docker-entrypoint-initdb.d"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: $MONGO_ROOT_USERNAME
+      MONGO_INITDB_ROOT_PASSWORD: $MONGO_ROOT_PASSWORD
+      MONGO_INITDB_DATABASE: $MONGO_DB
+      USERNAME: $MONGO_USERNAME
+      PASSWORD: $MONGO_PASSWORD
+      COLLECTION: $MONGO_COLLECTION
+    command: "--config /etc/mongo.conf"
+    expose:
+      - "27017"
+volumes:
+  mongo:

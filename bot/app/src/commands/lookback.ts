@@ -26,7 +26,7 @@ export const lookback: Command = {
 
     if (documents.length === 0) {
       const t = getDateString(time);
-      await interaction.reply(`[${t}]: No records within 24 hours`);
+      await interaction.reply(`[~${t}]: No records within 24 hours`);
       return;
     }
 

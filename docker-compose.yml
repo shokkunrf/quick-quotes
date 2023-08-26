@@ -29,6 +29,12 @@ services:
       BROKER_PASSWORD: $BROKER_PASSWORD
       BROKER_HOST: "broker"
       BROKER_PORT: "5672"
+      DB_HOST: "db"
+      DB_PORT: "27017"
+      DB_DATABASE: $MONGO_DB
+      DB_USERNAME: $MONGO_USERNAME
+      DB_PASSWORD: $MONGO_PASSWORD
+      DB_COLLECTION: $MONGO_COLLECTION
   broker:
     image: "rabbitmq:3.12.2-management-alpine"
     volumes:

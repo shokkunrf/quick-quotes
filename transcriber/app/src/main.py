@@ -7,19 +7,38 @@ from config import (
     BROKER_USERNAME,
     BROKER_PASSWORD,
     STORAGE_DIR,
+    DB_HOST,
+    DB_PORT,
+    DB_DATABASE,
+    DB_USERNAME,
+    DB_PASSWORD,
+    DB_COLLECTION,
 )
+from database import Database
 from receiver import Receiver
 from transcriber import Transcriber
 
 
 def main():
     transcriber = Transcriber()
+    database = Database(DB_USERNAME, DB_PASSWORD, DB_HOST, DB_PORT, DB_DATABASE)
 
     def on_message(body: bytes):
         b = json.loads(body)
         file_name = b["fileName"]
+        print("=== transcribe ===")
         text = transcriber.transcribe(f"{STORAGE_DIR}/{file_name}")
-        print("=== received ===: " + text)
+        print("=== create ===")
+        database.create(
+            DB_COLLECTION,
+            {
+                "guildID": b["guildID"],
+                "userID": b["userID"],
+                "time": b["time"],
+                "text": text,
+            },
+        )
+        print("=== finish ===")
 
     receiver = Receiver(
         host=BROKER_HOST,

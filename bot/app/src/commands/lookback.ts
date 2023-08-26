@@ -33,7 +33,10 @@ export const lookback: Command = {
     let message = '';
     for (const doc of documents) {
       const t = getDateString(new Date(doc.time));
-      message += `[${t}]: ${doc.text}\n`;
+      const name = interaction.guild?.members.cache.get(
+        doc.userID
+      )?.displayName;
+      message += `[${t}] ${name}:\n> ${doc.text}\n`;
     }
     await interaction.reply(message);
   },

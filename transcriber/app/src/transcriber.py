@@ -5,8 +5,8 @@ class Transcriber:
     _model: whisper.Whisper
     _language: str | None
 
-    def __init__(self, language: str | None):
-        self._model = whisper.load_model("base", download_root="/app/model")
+    def __init__(self, model: str, language: str | None):
+        self._model = whisper.load_model(model, download_root="/app/model")
         self._language = language
 
     def transcribe(self, file_path: str) -> str:

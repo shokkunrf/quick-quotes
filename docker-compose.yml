@@ -41,6 +41,7 @@ services:
       DB_USERNAME: $MONGO_USERNAME
       DB_PASSWORD: $MONGO_PASSWORD
       DB_COLLECTION: $MONGO_COLLECTION
+      MODEL: $TRANSCRIBER_MODEL
       LANGUAGE: $TRANSCRIBER_LANGUAGE
   broker:
     image: "rabbitmq:3.12.2-management-alpine"

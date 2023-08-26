@@ -13,6 +13,7 @@ from config import (
     DB_USERNAME,
     DB_PASSWORD,
     DB_COLLECTION,
+    MODEL,
     LANGUAGE,
 )
 from database import Database
@@ -21,7 +22,7 @@ from transcriber import Transcriber
 
 
 def main():
-    transcriber = Transcriber(LANGUAGE)
+    transcriber = Transcriber(MODEL, LANGUAGE)
     database = Database(DB_USERNAME, DB_PASSWORD, DB_HOST, DB_PORT, DB_DATABASE)
 
     def on_message(body: bytes):

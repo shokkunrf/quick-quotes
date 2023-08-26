@@ -2,10 +2,11 @@ import { CacheType, Client, Interaction } from 'discord.js';
 import { ping } from '@/commands/ping';
 import { join } from '@/commands/join';
 import { leave } from '@/commands/leave';
+import { lookback } from '@/commands/lookback';
 import { Command } from '@/commands/command';
 import { DEV_DISCORD_GUILD_ID, DEV_ENVIRONMENT } from '@/config';
 
-const commands: Command[] = [ping, join, leave];
+const commands: Command[] = [ping, join, leave, lookback];
 
 export async function register(client: Client<true>) {
   const commandData = commands.map((command) => command.data);

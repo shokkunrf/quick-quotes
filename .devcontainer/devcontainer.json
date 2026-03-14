@@ -1,0 +1,39 @@
+{
+  "name": "quick-quotes devcontainer",
+  "image": "ghcr.io/shokkunrf/devcontainer-images/base:3",
+  "features": {
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.14",
+      "toolsToInstall": "mypy,ruff"
+    },
+    "ghcr.io/shokkunrf/devcontainer-features/bun": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "ms-python.python",
+        "ms-python.mypy-type-checker",
+        "charliermarsh.ruff"
+      ],
+      "settings": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true,
+        "files.trimTrailingWhitespace": true,
+        "files.insertFinalNewline": true,
+        "python.analysis.typeCheckingMode": "basic",
+        "[python]": {
+          "editor.defaultFormatter": "charliermarsh.ruff"
+        }
+      }
+    }
+  },
+  "mounts": [
+    "source=${localEnv:HOME}/.claude,target=/home/developer/.claude,type=bind,consistency=cached",
+    "source=${localEnv:HOME}/.claude.json,target=/home/developer/.claude.json,type=bind",
+    "source=${localEnv:HOME}/.gemini,target=/home/developer/.gemini,type=bind"
+  ],
+  "initializeCommand": "${localWorkspaceFolder}/.devcontainer/initializeCommand.sh",
+  "remoteUser": "developer"
+}

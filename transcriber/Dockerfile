@@ -1,13 +1,11 @@
-FROM python:3.11.4-slim-bookworm
+FROM python:3.14-slim-trixie
 
 RUN apt update && \
     apt install -y \
-        ffmpeg \
-        sudo
+        ffmpeg
 
 RUN groupadd --gid 1000 snake && \
     useradd -s /bin/bash  --uid 1000 --gid 1000 -m snake
-RUN echo 'snake ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
 ENV PATH $PATH:/home/snake/.local/bin
 

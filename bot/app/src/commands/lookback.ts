@@ -42,6 +42,9 @@ export const lookback: Command = {
       message += `[${t}] ${name}:\n> ${doc.text}\n`;
     }
 
+    if (message.length > 2000) {
+      message = message.slice(0, 1997) + '...';
+    }
     await interaction.reply({ content: message, ephemeral: true });
   },
 };

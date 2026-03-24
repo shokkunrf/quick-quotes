@@ -43,6 +43,7 @@ def main():
                 "userID": b["userID"],
                 "time": dt_time,
                 "text": text,
+                "participants": b.get("participants", []),
             },
         )
         print("=== finish ===")

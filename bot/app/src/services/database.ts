@@ -13,7 +13,7 @@ const day = 86_400_000; // ms
 
 const client = new MongoClient(uri);
 
-export async function read(guildID: string, time: Date) {
+export async function read(guildID: string, time: Date, userID: string) {
   try {
     await client.connect();
     const documents = client
@@ -21,6 +21,7 @@ export async function read(guildID: string, time: Date) {
       .collection(DB_COLLECTION)
       .find({
         guildID: guildID,
+        participants: userID,
         time: { $gt: new Date(time.getTime() - day), $lt: time },
       })
       .sort({ time: 1 });

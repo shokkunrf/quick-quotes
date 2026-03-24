@@ -22,7 +22,11 @@ export const lookback: Command = {
     const datetimeString = interaction.options.getString('datetime');
 
     const time = datetimeString ? new Date(datetimeString) : new Date();
-    const documents = await read(interaction.guildId ?? '', time);
+    const documents = await read(
+      interaction.guildId ?? '',
+      time,
+      interaction.user.id
+    );
 
     if (documents.length === 0) {
       const t = getDateString(time);

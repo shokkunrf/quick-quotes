@@ -4,6 +4,7 @@ import { pipeline } from 'stream';
 import * as prism from 'prism-media';
 import { RECORDING_DIR } from '@/config';
 import { publishRecordedMessage } from './publish';
+import { Client, VoiceChannel } from 'discord.js';
 
 type GuildId = string;
 type UserId = string;
@@ -30,8 +31,9 @@ function getFileName(guildId: GuildId, userId: UserId, time: Date): string {
 }
 
 // Recorder
-export function listen(connection: VoiceConnection) {
+export function listen(connection: VoiceConnection, client: Client) {
   const guildId = connection.joinConfig.guildId;
+  const channelId = connection.joinConfig.channelId;
   const speakers = getSpeakers(guildId);
 
   // listen start
@@ -57,6 +59,11 @@ export function listen(connection: VoiceConnection) {
       },
     });
     const time = new Date();
+
+    const guild = client.guilds.cache.get(guildId);
+    const channel = guild?.channels.cache.get(channelId ?? '') as VoiceChannel;
+    const participants = Array.from(channel?.members.keys() ?? []) as string[];
+
     const fileName = getFileName(guildId, userId, time);
     const dist = createWriteStream(`${RECORDING_DIR}/${fileName}`);
 
@@ -69,6 +76,7 @@ export function listen(connection: VoiceConnection) {
         userID: userId,
         time,
         fileName,
+        participants,
       });
       speakers.delete(userId);
     });

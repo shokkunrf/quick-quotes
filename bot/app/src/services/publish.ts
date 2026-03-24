@@ -14,6 +14,7 @@ export type RecordedMessage = {
   userID: string;
   time: Date;
   fileName: string;
+  participants: string[];
 };
 
 export async function publishRecordedMessage(message: RecordedMessage) {

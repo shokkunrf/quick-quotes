@@ -46,23 +46,29 @@ export const lookback: Command = {
         doc.userID
       )?.displayName;
 
-      let displayText = doc.text;
-      if (typeof doc.text === 'object' && doc.text !== null && ENCRYPTION_KEY) {
-        try {
-          const key = Buffer.from(ENCRYPTION_KEY, 'hex');
-          const decipher = crypto.createDecipheriv(
-            'aes-256-gcm',
-            key,
-            Buffer.from(doc.text.iv, 'base64')
-          );
-          decipher.setAuthTag(Buffer.from(doc.text.tag, 'base64'));
-          let decrypted = decipher.update(doc.text.data, 'base64', 'utf8');
-          decrypted += decipher.final('utf8');
-          displayText = decrypted;
-        } catch (e) {
-          console.error('Decryption failed:', e);
+      let displayText: string;
+      if (typeof doc.text === 'object' && doc.text !== null) {
+        if (ENCRYPTION_KEY) {
+          try {
+            const key = Buffer.from(ENCRYPTION_KEY, 'hex');
+            const decipher = crypto.createDecipheriv(
+              'aes-256-gcm',
+              key,
+              Buffer.from(doc.text.iv, 'base64')
+            );
+            decipher.setAuthTag(Buffer.from(doc.text.tag, 'base64'));
+            let decrypted = decipher.update(doc.text.data, 'base64', 'utf8');
+            decrypted += decipher.final('utf8');
+            displayText = decrypted;
+          } catch (e) {
+            console.error('Decryption failed:', e);
+            displayText = '[Encrypted Message]';
+          }
+        } else {
           displayText = '[Encrypted Message]';
         }
+      } else {
+        displayText = String(doc.text);
       }
 
       message += `[${t}] ${name}:\n> ${displayText}\n`;

@@ -26,6 +26,12 @@ import base64
 
 
 def main():
+    if not ENCRYPTION_KEY:
+        print("[SECURITY WARNING] ENCRYPTION_KEY is not set! Conversation logs will be stored in PLAIN TEXT.")
+        print("Set ENCRYPTION_KEY in your environment to enable AES-256-GCM encryption.")
+    else:
+        print("[INFO] Encryption is enabled (AES-256-GCM).")
+
     transcriber = Transcriber(MODEL, LANGUAGE)
     database = Database(DB_USERNAME, DB_PASSWORD, DB_HOST, DB_PORT, DB_DATABASE)
 

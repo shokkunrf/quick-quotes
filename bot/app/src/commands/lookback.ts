@@ -26,7 +26,10 @@ export const lookback: Command = {
 
     if (documents.length === 0) {
       const t = getDateString(time);
-      await interaction.reply(`[~${t}]: No records within 24 hours`);
+      await interaction.reply({
+        content: `[~${t}]: No records within 24 hours`,
+        ephemeral: true,
+      });
       return;
     }
 
@@ -38,7 +41,8 @@ export const lookback: Command = {
       )?.displayName;
       message += `[${t}] ${name}:\n> ${doc.text}\n`;
     }
-    await interaction.reply(message);
+
+    await interaction.reply({ content: message, ephemeral: true });
   },
 };
 

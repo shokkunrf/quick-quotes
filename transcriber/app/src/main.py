@@ -15,11 +15,14 @@ from config import (
     DB_COLLECTION,
     MODEL,
     LANGUAGE,
+    ENCRYPTION_KEY,
 )
 from database import Database
 from receiver import Receiver
 from transcriber import Transcriber
 from datetime import datetime, timezone
+from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+import base64
 
 
 def main():
@@ -31,6 +34,23 @@ def main():
         file_name = b["fileName"]
         print("=== transcribe ===")
         text = transcriber.transcribe(f"{STORAGE_DIR}/{file_name}")
+        
+        print("=== encrypt ===")
+        encrypted_text = text
+        if ENCRYPTION_KEY:
+            try:
+                key = bytes.fromhex(ENCRYPTION_KEY)
+                aesgcm = AESGCM(key)
+                iv = os.urandom(12)
+                ct = aesgcm.encrypt(iv, text.encode('utf-8'), None)
+                encrypted_text = {
+                    "data": base64.b64encode(ct[:-16]).decode('utf-8'),
+                    "iv": base64.b64encode(iv).decode('utf-8'),
+                    "tag": base64.b64encode(ct[-16:]).decode('utf-8')
+                }
+            except Exception as e:
+                print(f"Encryption failed: {e}")
+
         print("=== create ===")
         
         # 数値(ms)をUTCのdatetimeオブジェクトに変換
@@ -42,7 +62,7 @@ def main():
                 "guildID": b["guildID"],
                 "userID": b["userID"],
                 "time": dt_time,
-                "text": text,
+                "text": encrypted_text,
                 "participants": b.get("participants", []),
             },
         )

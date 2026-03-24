@@ -19,6 +19,7 @@ from config import (
 from database import Database
 from receiver import Receiver
 from transcriber import Transcriber
+from datetime import datetime, timezone
 
 
 def main():
@@ -31,12 +32,16 @@ def main():
         print("=== transcribe ===")
         text = transcriber.transcribe(f"{STORAGE_DIR}/{file_name}")
         print("=== create ===")
+        
+        # 数値(ms)をUTCのdatetimeオブジェクトに変換
+        dt_time = datetime.fromtimestamp(b["time"] / 1000.0, tz=timezone.utc)
+
         database.create(
             DB_COLLECTION,
             {
                 "guildID": b["guildID"],
                 "userID": b["userID"],
-                "time": b["time"],
+                "time": dt_time,
                 "text": text,
             },
         )

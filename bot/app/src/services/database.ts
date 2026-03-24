@@ -21,7 +21,7 @@ export async function read(guildID: string, time: Date) {
       .collection(DB_COLLECTION)
       .find({
         guildID: guildID,
-        time: { $gt: time.getTime() - day, $lt: time.getTime() },
+        time: { $gt: new Date(time.getTime() - day), $lt: time },
       })
       .sort({ time: 1 });
 

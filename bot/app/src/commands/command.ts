@@ -5,7 +5,7 @@ import {
 } from 'discord.js';
 
 export type Command = {
-  data:SlashCommandOptionsOnlyBuilder
+  data: SlashCommandOptionsOnlyBuilder;
   execute: (
     interaction: ChatInputCommandInteraction<CacheType>
   ) => Promise<void>;

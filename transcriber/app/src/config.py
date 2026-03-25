@@ -14,3 +14,6 @@ DB_COLLECTION = os.getenv("DB_COLLECTION")
 MODEL = os.getenv("MODEL")
 LANGUAGE = os.getenv("LANGUAGE")
 ENCRYPTION_KEY = os.getenv("ENCRYPTION_KEY")
+
+if ENCRYPTION_KEY and len(ENCRYPTION_KEY) != 64:
+    raise ValueError("ENCRYPTION_KEY must be 64 characters (32 bytes) hex string.")

@@ -71,6 +71,7 @@ services:
       USERNAME: $MONGO_USERNAME
       PASSWORD: $MONGO_PASSWORD
       COLLECTION: $MONGO_COLLECTION
+      LOG_TTL_SECONDS: $LOG_TTL_SECONDS
     command: "--config /etc/mongo.conf"
     expose:
       - "27017"

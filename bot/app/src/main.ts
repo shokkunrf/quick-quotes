@@ -15,10 +15,8 @@ client.once(Events.ClientReady, async (client: Client<true>) => {
       );
     } else {
       console.warn(
-        '[SECURITY WARNING] ENCRYPTION_KEY is not set in a production environment!'
-      );
-      console.warn(
-        'It is strongly recommended to set ENCRYPTION_KEY for privacy protection.'
+        '[SECURITY WARNING] ENCRYPTION_KEY is not set in a production environment!\n' +
+          'It is strongly recommended to set ENCRYPTION_KEY for privacy protection.'
       );
     }
   } else {

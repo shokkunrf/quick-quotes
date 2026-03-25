@@ -47,19 +47,18 @@ export const lookback: Command = {
       )?.displayName;
 
       let displayText: string;
-      if (typeof doc.text === 'object' && doc.text !== null) {
+      const { text, iv, tag } = doc.content;
+
+      if (doc.is_encrypted) {
         if (ENCRYPTION_KEY) {
           try {
-            const key = Buffer.from(ENCRYPTION_KEY, 'hex');
             const decipher = crypto.createDecipheriv(
               'aes-256-gcm',
-              key,
-              Buffer.from(doc.text.iv, 'base64')
+              Buffer.from(ENCRYPTION_KEY, 'hex'),
+              Buffer.from(iv, 'base64')
             );
-            decipher.setAuthTag(Buffer.from(doc.text.tag, 'base64'));
-            let decrypted = decipher.update(doc.text.data, 'base64', 'utf8');
-            decrypted += decipher.final('utf8');
-            displayText = decrypted;
+            decipher.setAuthTag(Buffer.from(tag, 'base64'));
+            displayText = decipher.update(text, 'base64', 'utf8') + decipher.final('utf8');
           } catch (e) {
             console.error('Decryption failed:', e);
             displayText = '[Encrypted Message]';
@@ -68,7 +67,7 @@ export const lookback: Command = {
           displayText = '[Encrypted Message]';
         }
       } else {
-        displayText = String(doc.text);
+        displayText = text;
       }
 
       message += `[${t}] ${name}:\n> ${displayText}\n`;

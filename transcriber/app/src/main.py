@@ -40,7 +40,7 @@ def main():
         file_name = b["fileName"]
         print("=== transcribe ===")
         text = transcriber.transcribe(f"{STORAGE_DIR}/{file_name}")
-        
+
         print("=== encrypt ===")
         is_encrypted = False
         content = {
@@ -65,7 +65,7 @@ def main():
                 print(f"Encryption failed: {e}")
 
         print("=== create ===")
-        
+
         # 数値(ms)をUTCのdatetimeオブジェクトに変換
         dt_time = datetime.fromtimestamp(b["time"] / 1000.0, tz=timezone.utc)
 
@@ -76,7 +76,7 @@ def main():
                 "userID": b["userID"],
                 "time": dt_time,
                 "content": content,
-                "is_encrypted": is_encrypted,
+                "isEncrypted": is_encrypted,
                 "participants": b.get("participants", []),
             },
         )

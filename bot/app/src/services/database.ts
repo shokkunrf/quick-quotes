@@ -23,7 +23,7 @@ export interface TranscriptDocument extends Document {
   userID: string;
   time: Date;
   content: TranscriptContent;
-  is_encrypted: boolean;
+  isEncrypted: boolean;
   participants: string[];
 }
 

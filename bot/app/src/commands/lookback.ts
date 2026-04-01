@@ -49,7 +49,7 @@ export const lookback: Command = {
       let displayText: string;
       const { text, iv, tag } = doc.content;
 
-      if (doc.is_encrypted) {
+      if (doc.isEncrypted) {
         if (ENCRYPTION_KEY) {
           try {
             const decipher = crypto.createDecipheriv(

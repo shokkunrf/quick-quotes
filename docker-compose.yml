@@ -22,6 +22,7 @@ services:
       DB_USERNAME: $MONGO_USERNAME
       DB_PASSWORD: $MONGO_PASSWORD
       DB_COLLECTION: $MONGO_COLLECTION
+      ENCRYPTION_KEY: $ENCRYPTION_KEY
   transcriber:
     build:
       context: "./transcriber"
@@ -43,6 +44,7 @@ services:
       DB_COLLECTION: $MONGO_COLLECTION
       MODEL: $TRANSCRIBER_MODEL
       LANGUAGE: $TRANSCRIBER_LANGUAGE
+      ENCRYPTION_KEY: $ENCRYPTION_KEY
   broker:
     image: "rabbitmq:3.12.2-management-alpine"
     volumes:
@@ -69,6 +71,7 @@ services:
       USERNAME: $MONGO_USERNAME
       PASSWORD: $MONGO_PASSWORD
       COLLECTION: $MONGO_COLLECTION
+      LOG_TTL_SECONDS: $LOG_TTL_SECONDS
     command: "--config /etc/mongo.conf"
     expose:
       - "27017"

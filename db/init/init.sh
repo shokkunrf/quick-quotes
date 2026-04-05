@@ -14,6 +14,8 @@ db.createUser({
 
 db.createCollection('$COLLECTION') \n
 
+db.getCollection('$COLLECTION').createIndex({ "time": 1 }, { expireAfterSeconds: ${LOG_TTL_SECONDS:-259200} }) \n
+
 EOS
 )
 

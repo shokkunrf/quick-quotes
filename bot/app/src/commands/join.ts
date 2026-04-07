@@ -49,7 +49,7 @@ export const join: Command = {
       selfDeaf: false,
     });
 
-    listen(connection);
+    listen(connection, interaction.client);
 
     await interaction.reply('Joined:handshake:');
     await interaction.deleteReply();

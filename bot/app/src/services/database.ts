@@ -1,4 +1,4 @@
-import { MongoClient } from 'mongodb';
+import { MongoClient, Document } from 'mongodb';
 import {
   DB_USERNAME,
   DB_PASSWORD,
@@ -12,20 +12,48 @@ const uri = `mongodb://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_
 const day = 86_400_000; // ms
 
 const client = new MongoClient(uri);
+export interface TranscriptContent {
+  text: string;
+  iv: string;
+  tag: string;
+}
 
-export async function read(guildID: string, time: Date) {
+export interface TranscriptDocument extends Document {
+  guildID: string;
+  userID: string;
+  time: Date;
+  content: TranscriptContent;
+  isEncrypted: boolean;
+  participants: string[];
+}
+
+export async function read(
+  guildID: string,
+  time: Date,
+  userID: string
+): Promise<TranscriptDocument[]> {
   try {
     await client.connect();
     const documents = client
       .db(DB_DATABASE)
-      .collection(DB_COLLECTION)
+      .collection<TranscriptDocument>(DB_COLLECTION)
       .find({
         guildID: guildID,
-        time: { $gt: time.getTime() - day, $lt: time.getTime() },
+        participants: userID,
+        time: { $gt: new Date(time.getTime() - day), $lt: time },
       })
       .sort({ time: 1 });
 
-    return await documents.toArray();
+    const docs = await documents.toArray();
+
+    return docs.map((doc) => ({
+      ...doc,
+      content: {
+        text: doc.content?.text ?? '',
+        iv: doc.content?.iv ?? '',
+        tag: doc.content?.tag ?? '',
+      },
+    })) as TranscriptDocument[];
   } finally {
     await client.close();
   }
